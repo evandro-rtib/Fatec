@@ -106,8 +106,9 @@ int ExcluiItem(TLCidades *listaCidades, float idh)
 		{			
 			/* trazbalhando no encadeamento */
 			aux->ant->prox=aux->prox;
-			aux->prox->ant=aux->ant;
-			aux=aux->prox;
+			if (aux->prox != NULL)
+				aux->prox->ant=aux->ant;
+			aux=aux->ant;
 			free(remove);
 			controle=TRUE;
 		}
