@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "app_Cabec_Cont.h"
+//#include "ex1_Cabec_Enc.h"
+#include "ex2_Cabec_Cont.h"
 
 int main(void)
 {	
@@ -28,24 +29,24 @@ int main(void)
 		scanf("%f", &idh);
 
 		if (IncluiItem(&listaCidades, nome,populacao,area,pib,idh) == FALSE)
-		{	puts("Memoria insuficiente para esta operacao");
+		{	
+			puts("Memoria insuficiente para esta operacao\n");
 			return 2;
 		}
 	}
-
 	ImprimeLista(&listaCidades, "Conteudo da lista:",FALSE);
 	ImprimeLista(&listaCidades, "Conteudo da lista invertido:",TRUE);
-		
+	
 	while (TRUE)
 	{
-		printf("Informe o valor de IDH: ");
-		scanf("%d", &idh);
+		printf("Informe o valor de IDH:\n");
+		scanf("%f", &idh);
 	
 		if (idh < 0)
 			break;
 		
 		if (ExcluiItem(&listaCidades, idh) == FALSE)
-			puts("Valor de IDH nao encontrado");
+			printf("Valor de IDH %.4f nao encontrado\n", idh);
 		else
 		{
 			ImprimeLista(&listaCidades, "Novo conteudo da lista:",FALSE);			

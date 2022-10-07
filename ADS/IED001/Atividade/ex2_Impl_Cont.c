@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "app_Cabec_Cont.h"
+#include "ex2_Cabec_Cont.h"
 
 void InicializaLista(TLCidades *listaCidades)
 {	/* inicializa o conjunto de descritores da lista de cidades*/
@@ -79,13 +79,13 @@ void ImprimeLista(TLCidades *listaCidades, char *cabec, int invertido)
 
 int ExcluiItem(TLCidades *listaCidades, float idh)
 {	
-	int cont_1, cont_2;
+	int cont_1, cont_2, controle=FALSE;
 
 	/* Procurando o item a ser excluido */
 	cont_1 = 0;
 	while (cont_1 < listaCidades->final)
 	{
-		if (idh >= listaCidades->cidades[cont_1].idh)
+		if (listaCidades->cidades[cont_1].idh >= idh)
 		{			
 			/* trazendo os elementos posteriores ao eliminado
 				para o elemento anterior */
@@ -95,14 +95,15 @@ int ExcluiItem(TLCidades *listaCidades, float idh)
 				cont_2 = cont_2 + 1;
 			}
 			listaCidades->final = listaCidades->final -1;
+			controle=TRUE;
 		}
 		else
 		{
 			cont_1=cont_1 + 1;
 		}
 	}
-	if (cont_1 == listaCidades->final)
-		return FALSE;
-		
-	return TRUE;
+	if (controle == TRUE)
+		return TRUE;
+
+	return FALSE;
 }
