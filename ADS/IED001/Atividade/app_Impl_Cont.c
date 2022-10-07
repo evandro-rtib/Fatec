@@ -32,7 +32,7 @@ int IncluiItem(TLCidades *listaCidades, char *nome, int populacao,
 	return TRUE;
 }
 
-void ImprimeLista(TLCidades *listaCidades, char *cabec)
+void ImprimeLista(TLCidades *listaCidades, char *cabec, int invertido)
 {	/* imprimindo os valores da lista */
 	int cont;
 
@@ -42,42 +42,67 @@ void ImprimeLista(TLCidades *listaCidades, char *cabec)
 	{	
 		printf("\n\n\n%s\n", cabec);
 		printf("- - - - - - - - - - - - - - - - - - - - - - -\n");
-		cont = 0;
-		while (cont != listaCidades->final)
-		{	
-			printf("Indice: %i\n",cont);
-			printf("Nome: %s\n", listaCidades->cidades[cont].nome);
-			printf("Populacao: %i\n", listaCidades->cidades[cont].populacao);
-			printf("Area: %.2f\n", listaCidades->cidades[cont].area);
-			printf("PIB: %.2f\n", listaCidades->cidades[cont].pib);
-			printf("IDH: %.2f\n", listaCidades->cidades[cont].idh);
-			printf("- - - - - - - - - - - - - - - - - - - - - - -\n");
-			cont = cont + 1;
+		if (invertido == TRUE)
+		{
+			cont = listaCidades->final-1;
+			while (cont != listaCidades->inicio-1)
+			{	
+				printf("Indice: %i\n",cont);
+				printf("Nome: %s\n", listaCidades->cidades[cont].nome);
+				printf("Populacao: %i\n", listaCidades->cidades[cont].populacao);
+				printf("Area: %.2f [km2]\n", listaCidades->cidades[cont].area);
+				printf("PIB: %.2f\n", listaCidades->cidades[cont].pib);
+				printf("IDH: %.2f\n", listaCidades->cidades[cont].idh);
+				printf("- - - - - - - - - - - - - - - - - - - - - - -\n");
+				
+				cont = cont - 1;
+			}
 		}
+		else
+		{
+			cont = 0;
+			while (cont != listaCidades->final)
+			{	
+				printf("Indice: %i\n",cont);
+				printf("Nome: %s\n", listaCidades->cidades[cont].nome);
+				printf("Populacao: %i\n", listaCidades->cidades[cont].populacao);
+				printf("Area: %.2f [km2]\n", listaCidades->cidades[cont].area);
+				printf("PIB: %.2f\n", listaCidades->cidades[cont].pib);
+				printf("IDH: %.2f\n", listaCidades->cidades[cont].idh);
+				printf("- - - - - - - - - - - - - - - - - - - - - - -\n");
+				cont = cont + 1;
+			}
+		}
+		
 	}
 }
-void ImprimeListaInverso(TLCidades *listaCidades, char *cabec)
-{	/* imprimindo os valores da lista */
-	int cont;
 
-	if (listaCidades->final == 0)
-		puts("Lista vazia");
-	else
+int ExcluiItem(TLCidades *listaCidades, float idh)
+{	
+	int cont_1, cont_2;
+
+	/* Procurando o item a ser excluido */
+	cont_1 = 0;
+	while (cont_1 < listaCidades->final)
 	{
-		printf("\n\n\n%s\n", cabec);
-		printf("- - - - - - - - - - - - - - - - - - - - - - -\n");
-		cont = listaCidades->final-1;
-		while (cont != listaCidades->inicio-1)
-		{	
-			printf("Indice: %i\n",cont);
-			printf("Nome: %s\n", listaCidades->cidades[cont].nome);
-			printf("Populacao: %i\n", listaCidades->cidades[cont].populacao);
-			printf("Area: %.2f\n", listaCidades->cidades[cont].area);
-			printf("PIB: %.2f\n", listaCidades->cidades[cont].pib);
-			printf("IDH: %.2f\n", listaCidades->cidades[cont].idh);
-			printf("- - - - - - - - - - - - - - - - - - - - - - -\n");
-			
-			cont = cont - 1;
+		if (idh >= listaCidades->cidades[cont_1].idh)
+		{			
+			/* trazendo os elementos posteriores ao eliminado
+				para o elemento anterior */
+			cont_2=cont_1;
+			while (cont_2 < listaCidades->final)
+			{	listaCidades->cidades[cont_2] = listaCidades->cidades[cont_2 + 1];
+				cont_2 = cont_2 + 1;
+			}
+			listaCidades->final = listaCidades->final -1;
+		}
+		else
+		{
+			cont_1=cont_1 + 1;
 		}
 	}
+	if (cont_1 == listaCidades->final)
+		return FALSE;
+		
+	return TRUE;
 }

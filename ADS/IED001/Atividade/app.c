@@ -20,7 +20,7 @@ int main(void)
 			break;
 		printf("Informe a populacao da cidade:\n");
 		scanf("%i", &populacao);
-		printf("Informe area da cidade:\n");
+		printf("Informe area [km2] da cidade:\n");
 		scanf("%f", &area);
 		printf("Informe o PIB:\n");
 		scanf("%f", &pib);
@@ -33,21 +33,25 @@ int main(void)
 		}
 	}
 
-	ImprimeLista(&listaCidades, "Conteudo da lista:");
-	ImprimeListaInverso(&listaCidades, "Conteudo da lista invertido:");
+	ImprimeLista(&listaCidades, "Conteudo da lista:",FALSE);
+	ImprimeLista(&listaCidades, "Conteudo da lista invertido:",TRUE);
 		
-	/*while (TRUE)
-	{	printf("Informe o valor a excluir: ");
-		scanf("%d", &numero);
+	while (TRUE)
+	{
+		printf("Informe o valor de IDH: ");
+		scanf("%d", &idh);
 	
-		if (numero < 0)
+		if (idh < 0)
 			break;
 		
-		if (ExcluiItem(&lista, numero) == FALSE)
-			puts("Valor nao encontrado");
+		if (ExcluiItem(&listaCidades, idh) == FALSE)
+			puts("Valor de IDH nao encontrado");
 		else
-			ImprimeLista(&lista, "Novo conteudo da lista:");			
+		{
+			ImprimeLista(&listaCidades, "Novo conteudo da lista:",FALSE);			
+			ImprimeLista(&listaCidades, "Novo conteudo da lista invertido:",TRUE);
+		}
 	}
-	*/
+	
 	return 0;
 }

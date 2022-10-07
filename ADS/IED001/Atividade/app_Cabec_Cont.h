@@ -25,7 +25,6 @@ typedef struct
 void InicializaLista(TLCidades *);
 int IncluiItem(TLCidades *, char *, int populacao,
  				float area, float pib, float idh);
-void ImprimeLista(TLCidades *, char *);
-void ImprimeListaInverso(TLCidades *, char *);
+void ImprimeLista(TLCidades *, char *,int);
 
-int ExcluiItem(TLCidades *, int);
+int ExcluiItem(TLCidades *, float);
