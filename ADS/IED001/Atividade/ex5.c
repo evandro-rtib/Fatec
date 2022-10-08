@@ -21,19 +21,25 @@ typedef struct
 void InicializaLista(TRLista *);
 int IncluiItem(TRLista *, char *);
 void ImprimeLista(TRLista *,char *);
-void ExcluiItem(TRLista *,TRLista *);
 void UniaoLista(TRLista *,TRLista *,TRLista *);
+void InterseccaoLista(TRLista *,TRLista *,TRLista *);
+void DiferencaLista(TRLista *,TRLista *,TRLista *);
 int pesquisaLista(TRLista *,char *);
 
 int main(void)
 {
 
-	TRLista conjunto1,conjunto2,conjuntoUniao;
+	TRLista conjunto1,conjunto2,
+	conjuntoUniao,conjuntoInterseccao,
+	conjuntoDiferenca12,conjuntoDiferenca21;
 	char palavra[MAXIMO];
 	
 	InicializaLista(&conjunto1);
 	InicializaLista(&conjunto2);
 	InicializaLista(&conjuntoUniao);
+	InicializaLista(&conjuntoInterseccao);
+	InicializaLista(&conjuntoDiferenca12);
+	InicializaLista(&conjuntoDiferenca21);
 
 	while (TRUE)
 	{	
@@ -61,11 +67,24 @@ int main(void)
 			return 2;
 		}
 	}
-	ImprimeLista(&conjunto1,"Conjunto 1");
-	ImprimeLista(&conjunto2,"Conjunto 2");
+	
 	UniaoLista(&conjunto1,&conjunto2,&conjuntoUniao);
+	InterseccaoLista(&conjunto1,&conjunto2,&conjuntoInterseccao);
+	DiferencaLista(&conjunto1,&conjunto2,&conjuntoDiferenca12);
+	DiferencaLista(&conjunto2,&conjunto1,&conjuntoDiferenca21);
+	ImprimeLista(&conjunto1,"Conjunto 1");
+	printf("\n");
+	ImprimeLista(&conjunto2,"Conjunto 2");
+	printf("\n");
 	ImprimeLista(&conjuntoUniao,"Uniao dos Conjuntos");
-	ExcluiItem(&conjunto1,&conjunto2);
+	printf("\n");
+	ImprimeLista(&conjuntoInterseccao,"Conjunto Interseccao");
+	printf("\n");
+	ImprimeLista(&conjuntoDiferenca12,"Conjunto 1 - Conjunto 2");
+	printf("\n");
+	ImprimeLista(&conjuntoDiferenca21,"Conjunto 2 - Conjunto 1");
+	printf("\n");
+	
 
 	return 0;
 }
@@ -108,7 +127,7 @@ void ImprimeLista(TRLista *conjunto,char *cabec)
 	int controle;
 	if (aux==NULL)
 	{
-		printf("%s nao podem ser vazia", cabec);
+		printf("%s esta vazio", cabec);
 	}
 	else
 	{
@@ -154,6 +173,43 @@ void UniaoLista(TRLista *conjunto1,TRLista *conjunto2,TRLista *conjuntoUniao)
 		}
 }
 
+
+void InterseccaoLista(TRLista *conjunto1,TRLista *conjunto2,TRLista *conjuntoInterseccao)
+{
+	TLista *aux_1,*aux_2,*aux_3;
+	aux_1 = conjunto1->inicio;
+	aux_2 = conjunto2->inicio;
+	if (aux_1==NULL || aux_2==NULL)
+	{
+		return;
+	}
+	else
+		while (aux_2!=NULL)
+		{
+			if (pesquisaLista(conjunto1,aux_2->palavra)==1)
+			{
+				IncluiItem(conjuntoInterseccao,aux_2->palavra);
+			}
+			aux_2= aux_2->prox;
+		}
+		
+}
+
+void DiferencaLista(TRLista *conjunto1,TRLista *conjunto2,TRLista *conjuntoDiferenca)
+{
+	TLista *aux_1,*aux_2,*aux_3;
+	aux_1 = conjunto1->inicio;
+	aux_2 = conjunto2->inicio;
+	while (aux_1!=NULL)
+	{
+		if (pesquisaLista(conjunto2,aux_1->palavra)==0)
+		{
+			IncluiItem(conjuntoDiferenca,aux_1->palavra);
+		}
+		aux_1= aux_1->prox;
+	}
+
+}
 int pesquisaLista(TRLista *conjunto, char *palavra)
 {
 	TLista *aux;
@@ -167,36 +223,4 @@ int pesquisaLista(TRLista *conjunto, char *palavra)
 		aux = aux->prox;	
 	}
 	return FALSE;
-}
-void ExcluiItem(TRLista *conjunto1,TRLista *conjunto2)
-{
-	TLista *aux_1,*aux_2, *aux_2_remove;
-	aux_1 = conjunto1->inicio;
-	aux_2 = conjunto2->inicio;
-	aux_2_remove = conjunto2->inicio;
-	if (aux_1==NULL || aux_2==NULL)
-	{
-		printf("Conjunto 1 ou conjunto 2 nao podem ser vazias");
-	}
-	else
-	{
-		while (aux_1!=NULL)
-		{
-			aux_2 = conjunto2->inicio;
-			while (aux_2!=NULL)
-			{
-				if (aux_2->palavra == aux_1->palavra)
-				{
-					aux_2_remove = aux_2;
-					aux_2->ant->prox=aux_2->prox;
-					if (aux_2->prox!=NULL)
-						aux_2->prox->ant = aux_2->ant;
-					aux_2=aux_2->ant;
-					free(aux_2_remove);
-				}
-				aux_2=aux_2->prox;
-			}
-			aux_1=aux_1->prox;
-		}
-	}
 }

@@ -1,8 +1,11 @@
 laranja
 maracuja
 banana
+melao
+maca
 *
 mamao
 melancia
 banana
+maca
 *
