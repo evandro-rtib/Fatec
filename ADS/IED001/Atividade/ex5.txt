@@ -1,0 +1,8 @@
+laranja
+maracuja
+banana
+*
+mamao
+melancia
+banana
+*
