@@ -99,27 +99,54 @@ int ExcluiItem(TLCidades *listaCidades, float idh)
 	/* Procurando o item a ser excluido */
 	TCidades *aux, *remove;
 	aux = listaCidades->inicio;
-	while (aux->prox !=NULL)
+	while (TRUE)
 	{
-		remove = aux;
 		if (aux->idh >= idh)
-		{			
-			/* trazbalhando no encadeamento */
-			aux->ant->prox=aux->prox;
-			if (aux->prox != NULL)
-				aux->prox->ant=aux->ant;
-			aux=aux->ant;
-			free(remove);
+		{
+			remove = aux;
+			/*quando for o primeiro registro da lista*/
+			if(aux->ant == NULL)
+			{
+				/*quando não for o ultimo registro da lista*/
+				if (aux->prox != NULL)
+				{
+					listaCidades->inicio=aux->prox;
+					aux->prox->ant=aux->ant;
+					aux=listaCidades->inicio;
+				}
+				else
+				{
+					listaCidades->inicio=NULL;
+					listaCidades->final=NULL;
+					aux=listaCidades->inicio;
+				}
+			}
+			/*quando não for o primeiro registro da lista*/
+			else
+			{
+				aux->ant->prox=aux->prox;
+				/*quando for o ultimo registro da lista*/
+				if (aux->prox == NULL)
+				{
+					listaCidades->final=aux->ant;
+					aux=listaCidades->final;
+					aux=NULL;
+				}
+				else
+				{
+					aux->prox->ant=aux->ant;
+					aux=aux->ant;
+				}
+			}
 			controle=TRUE;
+			free(remove);
 		}
 		else
 		{
-			aux = aux->prox;
+			aux=aux->prox;
 		}
-		
+		if (aux==NULL)
+			break;
 	}
-	if (controle == TRUE)
-		return TRUE;
-
-	return FALSE;
+	return controle;
 }

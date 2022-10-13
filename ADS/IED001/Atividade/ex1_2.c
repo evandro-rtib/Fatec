@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include "ex1_Cabec_Enc.h"
-#include "ex2_Cabec_Cont.h"
+#include "ex1_Cabec_Enc.h"
+//#include "ex2_Cabec_Cont.h"
 
 int main(void)
 {	
