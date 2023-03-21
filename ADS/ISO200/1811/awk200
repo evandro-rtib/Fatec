@@ -1,0 +1,41 @@
+BEGIN{
+	print "Estatistica de diretorio"
+	print
+	registrosAceitos=0
+	registrosIgnorados=0
+	registrosComum=0
+	registrosDiretorio=0
+	registrosDiversos=0
+}
+{
+	if ($5 >0 ){
+		registrosAceitos=registrosAceitos+1
+		print "Nome:" $9 "Tamanho: " $5
+		print
+		if (substr($1,1,1) == "-"){
+			registrosComum=registrosComum+1
+		}
+		else if (substr($1,1,1) == "d"){
+			registrosDiretorio=registrosDiretorio+1
+		}
+		else {
+			registrosDiversos=registrosDiversos+1
+		}
+
+	}
+	else{
+		registrosIgnorados=registrosIgnorados + 1
+	}
+}
+END{
+	print
+	print "# # # # # # # # # # # # # # # # #"
+	print
+	print "registros lidos: " NR
+	print "numero registros ignorados: " registrosIgnorados
+	print "numero registros aceito: " registrosAceitos
+	print "numero registros do tipo comum: " registrosComum
+	print "numero registros do tipo diretorio: " registrosDiretorio
+	print "numero registros do tipos diversos: " registrosDiversos
+}
+
