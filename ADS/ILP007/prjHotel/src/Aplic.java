@@ -12,11 +12,17 @@ public class Aplic {
         int qtdQuartos=10;
         int opcoes;
         int numQuarto;
+        double valorBaseQuarto = 20.0;
         DecimalFormat df = new DecimalFormat("#,##.00");
         Scanner entrada = new Scanner(System.in);
         
         QuartoHotel[] matQtHotel = new QuartoHotel[qtdQuartos];
         
+        //POPULA DADOS DA MATRIZ
+        for (int q=0;q<qtdQuartos;q++){
+            matQtHotel[q] = new QuartoHotel(q+1, valorBaseQuarto);
+            valorBaseQuarto+=1.5;
+        }
         
         do {
             System.out.println("1 –Consultar quarto");
@@ -31,6 +37,12 @@ public class Aplic {
                 case 1:
                     System.out.print("Digite o número do quarto a ser consultado: ");
                     numQuarto = entrada.nextInt();
+                    if (matQtHotel[numQuarto-1].isSituacao()){
+                        System.out.println("Quarto " + numQuarto +" está reservado");
+                    }
+                    else {
+                        System.out.println("Quarto " + numQuarto +" está livre");
+                    }
             }
             
         } while(opcoes < 6);
