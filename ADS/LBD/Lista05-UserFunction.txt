@@ -1,0 +1,120 @@
+Evandro Rodrigues 0030482121018
+
+1- Escreva uma funcao FN_verHora que receba como parametro uma data no formato dd/mm/yyyy e 
+    devolva-a no formato dd/mm/yyyy:HH24:mi:ss.
+
+create or replace function Fn_verHora (data in date) return varchar2
+as
+    dataHora varchar2(20);
+begin
+    dataHora := TO_CHAR(data,'DD/MM/YYYY:HH24:mi:ss');
+    return dataHora;
+end;
+
+select Fn_verHora(sysdate) from dual;
+
+
+
+2- Escreva uma funcao que receba como parametro um codigo de Paciente (modelo Paciente-consulta) e 
+devolva IDOSO se o paciente tiver mais de 65 anos. 
+Caso contrario devolva NAO IDOSO.
+
+
+create or replace function Fn_idoso (Pcodpaciente in number) return varchar2
+as
+    res varchar2(20);
+    idade number;
+	nasc date;
+begin
+
+    select datanasc into nasc from paciente where codpaciente = Pcodpaciente;
+
+	idade := round((sysdate - nasc)/365.25);
+	
+    if idade > 65 then
+      res := 'IDOSO';
+    else
+      res := 'NAO IDOSO';
+    end if;
+    
+    return res;
+end;
+
+select Fn_idoso(codpaciente) from paciente where codpaciente = 4;
+
+
+3-	Crie uma funcao chamada FN_ConsultaEstoque que retorna a qtde corrente em estoque de determinado produto.
+a-	Passe para a funcao o codigo do produto
+b-	Crie o campo QTDE_estoque na tabela de produto.
+c-	Crie uma forma de executar a funcao criada.
+
+create or replace function FN_ConsultaEstoque(Pcodproduto in number) return number
+as
+	qtde number;
+    
+begin
+	select QTDE_estoque into qtde from tb_produto where codproduto = Pcodproduto;
+	return qtde;
+end;
+
+select FN_ConsultaEstoque(codproduto) from tb_produto;
+
+4- Escreva uma funcao que receba como parametro um numero de telefone nao formatado( so numeros) e 
+exiba este numero no formato: (xx)xxxx-xxxx
+
+Create or replace Function FN_telefone(numero in number) return varchar2
+as
+formato VARCHAR2(14);
+BEGIN
+    
+    formato := '('||SUBSTR(numero, 1, 2)||')'||SUBSTR(numero, 3, 5)||'-'||SUBSTR(numero, 8, 4);
+    Return formato;
+END;
+
+select FN_telefone(15988051796) from dual
+
+
+5- Escreva uma funcao que receba como parametro o codigo do cliente e conte quantos pedidos ele tem.
+
+Se ele tiver mais de 3 pedidos devolver mensagem:
+        'Cliente preferencial'  concatenado com o codigo e nome do cliente.
+
+Se tiver entre 1 e 3 devolver mensagem 'Cliente Normal' 
+                              concatenado com o codigo e nome do cliente
+Se nao tiver pedidos 'Cliente Inativo' 
+                              concatenado com o codigo e nome do cliente;
+
+Testar se o cliente existe, caso contrario emitir mensagem de erro.
+
+create or replace function FN_numPedidos(Pcodcliente in number) return varchar2
+as
+resultado VARCHAR2(50);
+numpedidos number;
+vcodCliente number;
+begin
+
+    select codcliente into vcodCliente from tb_cliente where Pcodcliente = codcliente;
+
+    select count(*) into numpedidos from  tb_pedido where Pcodcliente = codcliente;
+
+	if vcodCliente = Pcodcliente then    
+		if numpedidos > 3 then 
+        	resultado := 'Cliente preferencial ' || Pcodcliente;
+    	end if;
+		if numpedidos >= 1 and numpedidos <= 3  then 
+        	resultado := 'Cliente Normal ' || Pcodcliente;
+    	end if;
+    	if numpedidos = 0  then 
+        	resultado := 'Cliente Inativo ' || Pcodcliente;
+    	end if;
+	end if;
+
+    Return resultado;
+
+    exception
+        when no_data_found then 
+        	raise_application_error (-20999,' Erro, o cliente nao existe: '|| Pcodcliente);
+
+end;
+
+select FN_numPedidos(31) from dual;
